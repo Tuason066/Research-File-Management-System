@@ -31,52 +31,90 @@ public class Helper {
     
     private boolean value;
     // LOGIN
-    
-    public static boolean isStudent(String username, String password) {
+    public static boolean isStudentLoggedIn(String username, String password) {
+        Connection connection = null;
+        PreparedStatement searchStatement = null;
+        ResultSet searchRs = null;
+        
         try {
             Class.forName(JDBC_DRIVER);
-            Connection connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
+            connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
         
             String searchQuery = "SELECT * FROM user WHERE username=? AND password=?";
-            PreparedStatement searchStatement = connection.prepareStatement(searchQuery);
+            searchStatement = connection.prepareStatement(searchQuery);
             searchStatement.setString(1, username);
             searchStatement.setString(2, password);
-            ResultSet searchRs = searchStatement.executeQuery();
+            searchRs = searchStatement.executeQuery();
             
             return searchRs.next();
         
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            try {
+                if (searchRs != null) {
+                    searchRs.close();
+                }
+                if (searchStatement != null) {
+                    searchStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                    e.printStackTrace();
+            }
         }
     }
     
-    public static boolean isAdmin(String username, String password) {
+    public static boolean isAdminLoggedIn(String username, String password) {
+        Connection connection = null;
+        PreparedStatement searchStatement = null;
+        ResultSet searchRs = null;
+        
         try {
             Class.forName(JDBC_DRIVER);
-            Connection connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
+            connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
         
             String searchQuery = "SELECT * FROM admin WHERE username=? AND password=?";
-            PreparedStatement searchStatement = connection.prepareStatement(searchQuery);
+            searchStatement = connection.prepareStatement(searchQuery);
             searchStatement.setString(1, username);
             searchStatement.setString(2, password);
-            ResultSet searchRs = searchStatement.executeQuery();
+            searchRs = searchStatement.executeQuery();
             
             return searchRs.next();
         
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            try {
+                if (searchRs != null) {
+                    searchRs.close();
+                }
+                if (searchStatement != null) {
+                    searchStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                    e.printStackTrace();
+            }
         }
     }
-    
-    public static boolean updateStudent(String username, String password) {
+    // UPDATES
+    public static boolean updateStudentInfo(String username, String password) {
+        Connection connection = null;
+        PreparedStatement updateStatement = null;
+        
         try {
             Class.forName(JDBC_DRIVER);
-            Connection connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
+            connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
         
             String updateQuery = "UPDATE user SET username=?, password=? WHERE username=? AND password=?";
-            PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
+            updateStatement = connection.prepareStatement(updateQuery);
             updateStatement.setString(1, username);
             updateStatement.setString(2, password);
             updateStatement.setString(3, UserData.getInstance().getUsername());
@@ -86,16 +124,30 @@ public class Helper {
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            try {
+                if (updateStatement != null) {
+                    updateStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                    e.printStackTrace();
+            }
         }
     }
     
-    public static boolean updateAdmin(String username, String password) {
+    public static boolean updateAdminInfo(String username, String password) {
+        Connection connection = null;
+        PreparedStatement updateStatement = null;
+        
         try {
             Class.forName(JDBC_DRIVER);
-            Connection connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
+            connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
         
             String updateQuery = "UPDATE admin SET username=?, password=? WHERE username=? AND password=?";
-            PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
+            updateStatement = connection.prepareStatement(updateQuery);
             updateStatement.setString(1, username);
             updateStatement.setString(2, password);
             updateStatement.setString(3, UserData.getInstance().getUsername());
@@ -105,16 +157,30 @@ public class Helper {
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            try {
+                if (updateStatement != null) {
+                    updateStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                    e.printStackTrace();
+            }
         }
     }
-    
-    public static boolean addBook(String bookId, String title, int yearPublished, String category, String author, String url, JTable table) {
+    // BOOKS
+    public static boolean addNewBook(String bookId, String title, int yearPublished, String category, String author, String url, JTable table) {
+        Connection connection = null;
+        PreparedStatement insertStatement = null;
+        
         try {
             Class.forName(JDBC_DRIVER);
-            Connection connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
+            connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
         
             String insertQuery = "INSERT INTO book(book_id, title, year_published, category, author, url) VALUES (?,?,?,?,?,?)";
-            PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
+            insertStatement = connection.prepareStatement(insertQuery);
             insertStatement.setString(1, bookId);
             insertStatement.setString(2, title);
             insertStatement.setInt(3, yearPublished);
@@ -130,17 +196,32 @@ public class Helper {
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            try {
+                if (insertStatement != null) {
+                    insertStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                    e.printStackTrace();
+            }
         }
     }
     
     public static void displayBooks(JTable table) {
+        Connection connection = null;
+        PreparedStatement selectStatement = null;
+        ResultSet selectRs = null;
+        
         try {
             Class.forName(JDBC_DRIVER);
-            Connection connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
+            connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
         
             String selectQuery = "SELECT * FROM book";
-            PreparedStatement selectStatement = connection.prepareStatement(selectQuery);
-            ResultSet selectRs = selectStatement.executeQuery();
+            selectStatement = connection.prepareStatement(selectQuery);
+            selectRs = selectStatement.executeQuery();
             
             DefaultTableModel defaultTable = (DefaultTableModel) table.getModel();
             defaultTable.setRowCount(0); 
@@ -166,15 +247,32 @@ public class Helper {
             
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (selectRs != null) {
+                    selectRs.close();
+                }
+                if (selectStatement != null) {
+                    selectStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                    e.printStackTrace();
+            }
         }
     }
-    
+    // SEARCH
     public static void searchBooks(String searchText, String category, JTable table) {
+        Connection connection = null;
+        PreparedStatement searchStatement = null;
+        ResultSet searchRs = null;
+        
         try {
             Class.forName(JDBC_DRIVER);
-            Connection connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
+            connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
             String searchQuery;
-            ResultSet searchRs;
             
             if(category.equals("All")) {
                 searchQuery = "SELECT * FROM book "
@@ -183,7 +281,7 @@ public class Helper {
                     + "author LIKE ? OR "
                     + "year_published LIKE ?";
                 
-                PreparedStatement searchStatement = connection.prepareStatement(searchQuery);
+                searchStatement = connection.prepareStatement(searchQuery);
                 searchStatement.setString(1, "%" + searchText + "%");
                 searchStatement.setString(2, "%" + searchText + "%");
                 searchStatement.setString(3, "%" + searchText + "%");
@@ -196,7 +294,7 @@ public class Helper {
                     + "author LIKE ? OR "
                     + "year_published LIKE ?)";
                 
-                PreparedStatement searchStatement = connection.prepareStatement(searchQuery);
+                searchStatement = connection.prepareStatement(searchQuery);
                 searchStatement.setString(1, category);
                 searchStatement.setString(2, "%" + searchText + "%");
                 searchStatement.setString(3, "%" + searchText + "%");
@@ -230,23 +328,40 @@ public class Helper {
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (searchRs != null) {
+                    searchRs.close();
+                }
+                if (searchStatement != null) {
+                    searchStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                    e.printStackTrace();
+            }
         }
     }
     
     public static void comboSearchBooks(String searchText, JTable table) {
+        Connection connection = null;
+        PreparedStatement searchStatement = null;
+        ResultSet searchRs = null;
+        
         try {
             Class.forName(JDBC_DRIVER);
-            Connection connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
+            connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
             String searchQuery;
-            ResultSet searchRs;
             
             if(searchText.equals("All")) {
                 searchQuery = "SELECT * FROM book";
-                PreparedStatement searchStatement = connection.prepareStatement(searchQuery);
+                searchStatement = connection.prepareStatement(searchQuery);
                 searchRs = searchStatement.executeQuery();
             } else {
                 searchQuery = "SELECT * FROM book WHERE category=?";
-                PreparedStatement searchStatement = connection.prepareStatement(searchQuery);
+                searchStatement = connection.prepareStatement(searchQuery);
                 searchStatement.setString(1, searchText);
                 searchRs = searchStatement.executeQuery();
             }
@@ -276,29 +391,46 @@ public class Helper {
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (searchRs != null) {
+                    searchRs.close();
+                }
+                if (searchStatement != null) {
+                    searchStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                    e.printStackTrace();
+            }
         }
     }
-    
-    public static boolean addNewUser(String userId, String role, String username, char[] password, JTable table) {
+    // ADD
+    public static boolean addNewStudent(String userId, String role, String username, char[] password, JTable table) {
         // Already an account
-        if(isExistedUser(userId)) return false;
+        if(isStudentExisted(userId)) return false;
         
         // Not enrolled
-        if(!isEnrolled(userId)) return false;
+        if(!isStudentEnrolled(userId)) return false;
+        
+        Connection connection = null;
+        PreparedStatement insertStatement = null;
         
         try {
             Class.forName(JDBC_DRIVER);
-            Connection connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
+            connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
         
             String insertQuery = "INSERT INTO user(student_id, role, username, password) VALUES (?,?,?,?)";
-            PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
+            insertStatement = connection.prepareStatement(insertQuery);
             insertStatement.setString(1, userId);
             insertStatement.setString(2, role);
             insertStatement.setString(3, username);
             insertStatement.setString(4, new String(password));
 
             if(insertStatement.executeUpdate() > 0) {
-                displayUsers(table);
+                displayStudents(table);
                 return true;
             } else {
                 return false;
@@ -306,18 +438,33 @@ public class Helper {
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            try {
+                if (insertStatement != null) {
+                    insertStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                    e.printStackTrace();
+            }
         }
     }
     // Already an account
-    public static boolean isExistedUser(String id) {
+    public static boolean isStudentExisted(String id) {
+        Connection connection = null;
+        PreparedStatement searchIdStatement = null;
+        ResultSet searchIdRs = null;
+        
         try {
             Class.forName(JDBC_DRIVER);
-            Connection connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
+            connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
         
             String searchIdQuery = "SELECT * FROM user WHERE student_id=?";
-            PreparedStatement searchIdStatement = connection.prepareStatement(searchIdQuery);
+            searchIdStatement = connection.prepareStatement(searchIdQuery);
             searchIdStatement.setString(1, id);
-            ResultSet searchIdRs = searchIdStatement.executeQuery();
+            searchIdRs = searchIdStatement.executeQuery();
             
             if(searchIdRs.next()) {
                 JOptionPane.showMessageDialog(null, "This ID number has already an account.");
@@ -329,18 +476,36 @@ public class Helper {
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            try {
+                if (searchIdRs != null) {
+                    searchIdRs.close();
+                }
+                if (searchIdStatement != null) {
+                    searchIdStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                    e.printStackTrace();
+            }
         }
     }
     // If it is enrolled
-    public static boolean isEnrolled(String id) {
+    public static boolean isStudentEnrolled(String id) {
+        Connection connection = null;
+        PreparedStatement searchIdStatement = null;
+        ResultSet searchIdRs = null;
+        
         try {
             Class.forName(JDBC_DRIVER);
-            Connection connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
+            connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
         
             String searchIdQuery = "SELECT * FROM student_info WHERE student_id=?";
-            PreparedStatement searchIdStatement = connection.prepareStatement(searchIdQuery);
+            searchIdStatement = connection.prepareStatement(searchIdQuery);
             searchIdStatement.setString(1, id);
-            ResultSet searchIdRs = searchIdStatement.executeQuery();
+            searchIdRs = searchIdStatement.executeQuery();
             
             if(searchIdRs.next()) {
                 return true;
@@ -353,17 +518,35 @@ public class Helper {
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            try {
+                if (searchIdRs != null) {
+                    searchIdRs.close();
+                }
+                if (searchIdStatement != null) {
+                    searchIdStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                    e.printStackTrace();
+            }
         }
     }
-    
-    public static void displayUsers(JTable table) {
+    // USERS
+    public static void displayStudents(JTable table) {
+        Connection connection = null;
+        PreparedStatement selectStatement = null;
+        ResultSet selectRs = null;
+        
         try {
             Class.forName(JDBC_DRIVER);
-            Connection connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
+            connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
         
             String selectQuery = "SELECT * FROM user";
-            PreparedStatement selectStatement = connection.prepareStatement(selectQuery);
-            ResultSet selectRs = selectStatement.executeQuery();
+            selectStatement = connection.prepareStatement(selectQuery);
+            selectRs = selectStatement.executeQuery();
             
             DefaultTableModel defaultTable = (DefaultTableModel) table.getModel();
             defaultTable.setRowCount(0); 
@@ -388,18 +571,36 @@ public class Helper {
             
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (selectRs != null) {
+                    selectRs.close();
+                }
+                if (selectStatement != null) {
+                    selectStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                    e.printStackTrace();
+            }
         }
     }
     
-    public static void searchUser(String searchText, JTable table) {
+    public static void searchStudents(String searchText, JTable table) {
+        Connection connection = null;
+        PreparedStatement searchStatement = null;
+        ResultSet searchRs = null;
+        
         try {
             Class.forName(JDBC_DRIVER);
-            Connection connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
+            connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
         
             String searchQuery = "SELECT * FROM user WHERE student_id LIKE ?";
-            PreparedStatement searchStatement = connection.prepareStatement(searchQuery);
+            searchStatement = connection.prepareStatement(searchQuery);
             searchStatement.setString(1, "%" + searchText + "%");
-            ResultSet searchRs = searchStatement.executeQuery();
+            searchRs = searchStatement.executeQuery();
             
             DefaultTableModel defaultTable = (DefaultTableModel) table.getModel();
             defaultTable.setRowCount(0); 
@@ -424,20 +625,37 @@ public class Helper {
             
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (searchRs != null) {
+                    searchRs.close();
+                }
+                if (searchStatement != null) {
+                    searchStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                    e.printStackTrace();
+            }
         }
     }
-    
+    // DISPLAY DATA
     public static void showBookById(String id) throws IOException {
+        Connection connection = null;
+        PreparedStatement searchStatement = null;
+        ResultSet searchRs = null;
         
         try {
             
             Class.forName(JDBC_DRIVER);
-            Connection connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
+            connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
         
             String searchQuery = "SELECT * FROM book WHERE book_id=?";
-            PreparedStatement searchStatement = connection.prepareStatement(searchQuery);
+            searchStatement = connection.prepareStatement(searchQuery);
             searchStatement.setString(1, id);
-            ResultSet searchRs = searchStatement.executeQuery();
+            searchRs = searchStatement.executeQuery();
             
             if(searchRs.next()) {
                 File file = new File(searchRs.getString("url"));
@@ -456,19 +674,37 @@ public class Helper {
             
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (searchRs != null) {
+                    searchRs.close();
+                }
+                if (searchStatement != null) {
+                    searchStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                    e.printStackTrace();
+            }
         }
     }
     
-    public static void showUserInformation(String studentId) {
+    public static void showStudentInformation(String studentId) {
+        Connection connection = null;
+        PreparedStatement searchStatement = null;
+        ResultSet searchRs = null;
+        
         try {
             
             Class.forName(JDBC_DRIVER);
-            Connection connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
+            connection = DriverManager.getConnection(DB_CONNECTION_URL, DB_USERNAME, DB_PASSWORD);
         
             String searchQuery = "SELECT * FROM student_info WHERE student_id=?";
-            PreparedStatement searchStatement = connection.prepareStatement(searchQuery);
+            searchStatement = connection.prepareStatement(searchQuery);
             searchStatement.setString(1, studentId);
-            ResultSet searchRs = searchStatement.executeQuery();
+            searchRs = searchStatement.executeQuery();
             
             if(searchRs.next()) {
                 new StudentInformation(searchRs).setVisible(true);
@@ -476,6 +712,20 @@ public class Helper {
             
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (searchRs != null) {
+                    searchRs.close();
+                }
+                if (searchStatement != null) {
+                    searchStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                    e.printStackTrace();
+            }
         }
     }
     

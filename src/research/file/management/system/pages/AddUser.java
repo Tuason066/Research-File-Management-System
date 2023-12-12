@@ -7,7 +7,7 @@ package research.file.management.system.pages;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import static research.file.management.system.images.database.Helper.addNewUser;
+import static research.file.management.system.images.database.Helper.addNewStudent;
 
 /**
  *
@@ -178,7 +178,7 @@ public class AddUser extends javax.swing.JFrame {
         }
         
         // DATABASE
-        if(addNewUser(userId, role, username, password, table)) {
+        if(addNewStudent(userId, role, username, password, table)) {
             JOptionPane.showMessageDialog(rootPane, "Successfully added new user.");
         }
     }//GEN-LAST:event_addBtn1ActionPerformed

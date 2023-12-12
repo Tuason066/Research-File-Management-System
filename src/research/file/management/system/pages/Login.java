@@ -5,8 +5,8 @@
 package research.file.management.system.pages;
 
 import javax.swing.JOptionPane;
-import static research.file.management.system.images.database.Helper.isAdmin;
-import static research.file.management.system.images.database.Helper.isStudent;
+import static research.file.management.system.images.database.Helper.isAdminLoggedIn;
+import static research.file.management.system.images.database.Helper.isStudentLoggedIn;
 import research.file.management.system.images.database.UserData;
 
 /**
@@ -133,11 +133,11 @@ public class Login extends javax.swing.JFrame {
         String username = usernameField.getText();
         String password = passwordField.getText();
         
-        if(isStudent(username, password)) {
+        if(isStudentLoggedIn(username, password)) {
             this.dispose();
             new Student().setVisible(true);
             UserData.getInstance().setUserData(username, password);
-        } else if(isAdmin(username, password)) {
+        } else if(isAdminLoggedIn(username, password)) {
             this.dispose();
             new Books().setVisible(true);
             UserData.getInstance().setUserData(username, password);

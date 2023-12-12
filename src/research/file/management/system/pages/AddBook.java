@@ -7,7 +7,7 @@ package research.file.management.system.pages;
 import java.time.Year;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import static research.file.management.system.images.database.Helper.addBook;
+import static research.file.management.system.images.database.Helper.addNewBook;
 
 /**
  *
@@ -177,7 +177,7 @@ public class AddBook extends javax.swing.JFrame {
         }
         
         // DATABASE
-        if(addBook(bookId, title, yearPublished, category, author, url, this.table)) {
+        if(addNewBook(bookId, title, yearPublished, category, author, url, this.table)) {
             JOptionPane.showMessageDialog(rootPane, "Successfully add new book.");
         } else {
             JOptionPane.showMessageDialog(rootPane, "Failed to add new book.");

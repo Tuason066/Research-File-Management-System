@@ -6,8 +6,8 @@ package research.file.management.system.pages;
 
 import javax.swing.table.TableModel;
 import research.file.management.system.images.database.Helper;
-import static research.file.management.system.images.database.Helper.displayUsers;
-import static research.file.management.system.images.database.Helper.searchUser;
+import static research.file.management.system.images.database.Helper.displayStudents;
+import static research.file.management.system.images.database.Helper.searchStudents;
 
 /**
  *
@@ -22,12 +22,8 @@ public class StudentUsers extends javax.swing.JFrame {
         initComponents();
         
         // display users
-        displayUsers(userTable);
+        displayStudents(userTable);
     }
-    
-    
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -175,7 +171,7 @@ public class StudentUsers extends javax.swing.JFrame {
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
         String searchText = searchField.getText();
-        searchUser(searchText, userTable);
+        searchStudents(searchText, userTable);
     }//GEN-LAST:event_searchBtnActionPerformed
 
     private void settingsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsBtnActionPerformed
@@ -189,7 +185,7 @@ public class StudentUsers extends javax.swing.JFrame {
         TableModel model = userTable.getModel();
         String studentId = model.getValueAt(index, 0).toString();
         
-        Helper.showUserInformation(studentId);
+        Helper.showStudentInformation(studentId);
     }//GEN-LAST:event_userTableMouseClicked
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed

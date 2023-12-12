@@ -5,7 +5,7 @@
 package research.file.management.system.pages;
 
 import javax.swing.JOptionPane;
-import static research.file.management.system.images.database.Helper.updateAdmin;
+import static research.file.management.system.images.database.Helper.updateAdminInfo;
 import research.file.management.system.images.database.UserData;
 
 /**
@@ -184,7 +184,7 @@ public class AdminSettings extends javax.swing.JFrame {
         String username = usernameField.getText();
         String password = passwordField.getText();
         
-        if(updateAdmin(username, password)) {
+        if(updateAdminInfo(username, password)) {
             JOptionPane.showMessageDialog(rootPane, "Update Successfully.");
         } else {
             JOptionPane.showMessageDialog(rootPane, "Failed to update please try again.");
